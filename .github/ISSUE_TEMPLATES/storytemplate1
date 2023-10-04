@@ -1,11 +1,11 @@
-**As a** [role]  
-**I need** [function]  
-**So that** [benefit]  
+**As a user** [role]  
+**I need login to work** [function]  
+**So that i could use the webapp** [benefit]  
       
 ### Details and Assumptions
-    * [document what you know]      
+    * Functional registation and login system
 ### Acceptance Criteria     
     gherkin 
-    Given [some context]
-    When [certain action is taken]
-    Then [the outcome of action is observed]
+    Given that i want to login on a front page of a website[some context]
+    I use login form[certain action is taken]
+    Then I'm redirected to my profiles page[the outcome of action is observed]
