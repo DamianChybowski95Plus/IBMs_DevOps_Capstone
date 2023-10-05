@@ -29,7 +29,7 @@ def index():
         jsonify(
             name="Account REST API Service",
             version="1.0",
-            # paths=url_for("list_accounts", _external=True),
+            paths=url_for("list_all_accounts", _external=True),
         ),
         status.HTTP_200_OK,
     )
@@ -60,15 +60,35 @@ def create_accounts():
 ######################################################################
 # LIST ALL ACCOUNTS
 ######################################################################
+@app.route("/accounts", methods=["GET"])
+def list_all_accounts():
+    """
+    Returns a list of dictionaries of accounts
+    """
+    accounts_json = []
+    app.logger.info("Request to read all accounts")
+    accounts = Account.all()
+  
+    for q in accounts:
+        accounts_json.extend( q.serialize() )
 
-# ... place you code here to LIST accounts ...
+    return ( jsonify(accounts_json), 200 )
 
 
 ######################################################################
 # READ AN ACCOUNT
 ######################################################################
-
-# ... place you code here to READ an account ...
+@app.route("/accounts/<int:id>", methods=["GET"])
+def read_an_account(id):
+    """
+    Reads an Account
+    This endpoint will read an Account based the account_id that is requested
+    """
+    app.logger.info("Request to read an Account with id: %s", id)
+    account = Account.find(id)
+    if not account:
+        abort(status.HTTP_404_NOT_FOUND, f"Account with id [{id}] could not be found.")
+    return account.serialize(), status.HTTP_200_OK
 
 
 ######################################################################
