@@ -60,20 +60,21 @@ def create_accounts():
 ######################################################################
 # LIST ALL ACCOUNTS
 ######################################################################
+
 @app.route("/accounts", methods=["GET"])
 def list_all_accounts():
     """
     Returns a list of dictionaries of accounts
     """
     app.logger.info("Request to read all accounts")
-    accounsts_list = [ account.serialize() for account in Account.all() ] 
+    accounsts_list = [account.serialize() for account in Account.all()] 
 
     return ( jsonify(accounsts_list), 200 )
-
 
 ######################################################################
 # READ AN ACCOUNT
 ######################################################################
+
 @app.route("/accounts/<int:id>", methods=["GET"])
 def read_an_account(id):
     """
