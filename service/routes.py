@@ -65,14 +65,10 @@ def list_all_accounts():
     """
     Returns a list of dictionaries of accounts
     """
-    accounts_json = []
     app.logger.info("Request to read all accounts")
-    accounts = Account.all()
-  
-    for q in accounts:
-        accounts_json.extend( q.serialize() )
+    accounsts_list = [ account.serialize() for account in Account.all() ] 
 
-    return ( jsonify(accounts_json), 200 )
+    return ( jsonify(accounsts_list), 200 )
 
 
 ######################################################################
@@ -95,14 +91,36 @@ def read_an_account(id):
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
 
-# ... place you code here to UPDATE an account ...
+@app.route("/accounts/<int:account_id>", methods=["PUT"])
+def update_accounts(account_id):
+    """
+    Update an Account
+    This endpoint will update an Account based on the posted data
+    """
+    app.logger.info("Request to update an Account with id: %s", account_id)
+    account = Account.find(account_id)
+    if not account:
+        abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
+    account.deserialize(request.get_json())
+    account.update()
+    return account.serialize(), status.HTTP_200_OK
 
 
 ######################################################################
 # DELETE AN ACCOUNT
 ######################################################################
 
-# ... place you code here to DELETE an account ...
+@app.route("/accounts/<int:account_id>", methods=["DELETE"])
+def delete_accounts(account_id):
+    """
+    Delete an Account
+    This endpoint will delete an Account based on the account_id that is requested
+    """
+    app.logger.info("Request to delete an Account with id: %s", account_id)
+    account = Account.find(account_id)
+    if account:
+        account.delete()
+    return "", status.HTTP_204_NO_CONTENT
 
 
 ######################################################################
