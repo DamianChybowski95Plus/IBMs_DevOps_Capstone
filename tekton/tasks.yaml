@@ -53,10 +53,10 @@ spec:
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: nosetests
+  name: nose
 spec:
-  description: Run nosetests on provided input
-  workspaces: 
+  description: This task will run nosetests on the provided input.
+  workspaces:
     - name: source
   params:
     - name: args
@@ -77,8 +77,10 @@ spec:
       script: |
         #!/bin/bash
         set -e
+
         echo "***** Installing dependencies *****"
         python -m pip install --upgrade pip wheel
         pip install -qr requirements.txt
+
         echo "***** Running nosetests with: $(params.args)"
         nosetests $(params.args)
